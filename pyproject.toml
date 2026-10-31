@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "weewx-rain-fix"
+version = "2.0.0"
+description = "Corrige el acumulado de precipitación de una base de datos WeeWX"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+dependencies = []
+
+[project.scripts]
+weewx-rain-fix = "main:main"
+
+[project.gui-scripts]
+weewx-rain-fix-gui = "gui:main"
+
+[tool.setuptools]
+py-modules = ["main", "gui"]
+packages = ["rainfix"]
+
+[tool.setuptools.package-data]
+rainfix = ["assets/*"]

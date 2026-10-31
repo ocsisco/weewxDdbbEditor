@@ -1,0 +1,3 @@
+# weewxDdbbEditor no tiene dependencias externas: solo necesita Python 3.8 o
+# superior. Este archivo existe para que `pip install -r requirements.txt`
+# funcione sin errores en instalaciones automatizadas.

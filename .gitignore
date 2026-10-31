@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+*.bak
+*.sdb-journal
+*.sdb-wal
+*.sdb-shm
+*.sdb
+*.bak

@@ -1,0 +1,67 @@
+name: Compilar ejecutables
+
+# Genera un .exe para Windows y un binario para Linux cada vez que se sube
+# código. Los archivos quedan disponibles en la pestaña "Actions" del
+# repositorio, dentro de cada ejecución, en la sección "Artifacts".
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    name: Windows (.exe)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar PyInstaller
+        run: python -m pip install --upgrade pip pyinstaller
+
+      - name: Compilar
+        run: python herramientas/compilar.py
+
+      - name: Subir el ejecutable
+        uses: actions/upload-artifact@v4
+        with:
+          name: CorrectorLluviaWeeWX-windows
+          path: dist/CorrectorLluviaWeeWX.exe
+          if-no-files-found: error
+
+  linux:
+    name: Linux (binario)
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar Tkinter y venv
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-tk python3-venv
+
+      - name: Crear entorno con Tkinter del sistema
+        run: python3 -m venv --system-site-packages .venv
+
+      - name: Instalar PyInstaller
+        run: |
+          .venv/bin/python -m pip install --upgrade pip pyinstaller
+
+      - name: Compilar
+        run: .venv/bin/python herramientas/compilar.py
+
+      - name: Empaquetar
+        run: |
+          chmod +x dist/CorrectorLluviaWeeWX
+          tar -czf CorrectorLluviaWeeWX-linux.tar.gz -C dist CorrectorLluviaWeeWX
+
+      - name: Subir el ejecutable
+        uses: actions/upload-artifact@v4
+        with:
+          name: CorrectorLluviaWeeWX-linux
+          path: CorrectorLluviaWeeWX-linux.tar.gz
+          if-no-files-found: error
